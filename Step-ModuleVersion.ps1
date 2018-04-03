@@ -14,8 +14,10 @@ function Step-ModuleVersion {
         foreach ($Item in $Version) {
             switch ($By) {
                 Major {
-                    
+                    New-Object -TypeName Version -ArgumentList $Item.Major, 0, 0, 0 | 
+                        Add-Member -MemberType NoteProperty -Name Path -Value $Item.Path
                 }
+                # FIXME: overige cases
             }
         }
     }
