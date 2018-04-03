@@ -19,19 +19,19 @@ function Step-ModuleVersion
             {
                 Major
                 {
-                    New-Object -TypeName Version -ArgumentList $Item.Major + 1, 0, 0, 0
+                    New-Object -TypeName Version -ArgumentList ($Item.Major + 1), 0, 0, 0
                 }
                 Minor
                 {
-                    New-Object -TypeName Version -ArgumentList $Item.Major, $Item.Minor + 1, 0, 0
+                    New-Object -TypeName Version -ArgumentList $Item.Major, ($Item.Minor + 1), 0, 0
                 }
                 Build
                 {
-                    New-Object -TypeName Version -ArgumentList $Item.Major, $Item.Minor, $Item.Build + 1, 0
+                    New-Object -TypeName Version -ArgumentList $Item.Major, $Item.Minor, ($Item.Build + 1), 0
                 }
                 Revision
                 {
-                    New-Object -TypeName Version -ArgumentList $Item.Major, $Item.Minor, $Item.Build, $Item.Revision + 1
+                    New-Object -TypeName Version -ArgumentList $Item.Major, $Item.Minor, $Item.Build, ($Item.Revision + 1)
                 }
             }
 
