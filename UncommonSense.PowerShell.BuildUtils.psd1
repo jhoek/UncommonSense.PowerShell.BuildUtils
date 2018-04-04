@@ -69,7 +69,7 @@ Description = 'Utility functions for building and publishing PowerShell modules'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Get-ModuleVersion', 'Set-ExportedMembers', 'Step-ModuleVersion', 'Set-AssemblyInfoVersion'
+FunctionsToExport = 'Get-ModuleVersion', 'Set-ExportedModuleMembers', 'Step-ModuleVersion', 'Set-AssemblyInfoVersion'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
