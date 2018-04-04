@@ -15,14 +15,14 @@ function Set-AssemblyInfoVersion
     {
         Get-ChildItem -Path $Item -Name AssemblyInfo.cs -Recurse:$Recurse | 
             ForEach-Object {
-                $NewContent = switch -Regex -File $_
+                $NewContent = switch -Regex -File $_ 
                 {
                     '^\[assembly: AssemblyVersion\(".*"\)\]$' { "[assembly: AssemblyVersion(`"$($Version.ToString())`")]" } 
                     '^\[assembly: AssemblyFileVersion\(".*"\)\]$' { "[assembly: AssemblyFileVersion(`"$($Version.ToString())`")]" }
                     default { $_ } 
                 } 
                 
-                $NewContent | Set-Content -Path $_
+                $NewContent | Set-Content -Path $_ -Encoding UTF8
             }
         }
     }
