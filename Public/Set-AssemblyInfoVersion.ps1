@@ -19,6 +19,7 @@ function Set-AssemblyInfoVersion
                 {
                     '^\[assembly: AssemblyVersion\(".*"\)\]$' { "[assembly: AssemblyVersion(`"$($Version.ToString())`")]" } 
                     '^\[assembly: AssemblyFileVersion\(".*"\)\]$' { "[assembly: AssemblyFileVersion(`"$($Version.ToString())`")]" }
+                    default { $_ } 
                 } 
                 
                 $NewContent | Set-Content -Path $_
