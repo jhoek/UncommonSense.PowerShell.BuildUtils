@@ -18,7 +18,7 @@ function Set-ExportedModuleMembers
 
             $FunctionNames = Get-Command -Module $ModuleName -CommandType Function | Select-Object -ExpandProperty Name
             Write-Verbose "Function names are $($FunctionsNames -join ', ')"
-            if ($FunctionNames) { Update-ModuleManifest -Path $Item -FunctionsToExport $FunctionNames)
+            if ($FunctionNames) { Update-ModuleManifest -Path $Item -FunctionsToExport $FunctionNames }
 
             $AliasNames = Get-Command -Module $ModuleName -CommandType Alias | Select-Object -ExpandProperty Name
             Write-Verbose "Alias names are $($AliasNames -join ', ')"
