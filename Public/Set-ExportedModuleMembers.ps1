@@ -10,18 +10,23 @@ function Set-ExportedModuleMembers
     {
         foreach ($Item in $Path)
         {
+            Write-Verbose "Importing module $Item"
             Import-Module $Item -Force
 
-            $ModuleName = Split-Path -Path $Item -LeafBase
-            $FunctionNames = Get-Command -Module $ModuleName -CommandType Function | Select-Object -ExpandProperty Name
-            $AliasNames = Get-Command -Module $ModuleName -CommandType Alias | Select-Object -ExpandProperty Name
-            $CmdletNames = Get-Command -Module $ModuleName -CommandType Cmdlet | Select-Object -ExpandProperty Name
+            $ModuleName = (Get-Item -Path $Item).BaseName
+            Write-Verbose "Module name is $ModuleName"
 
-            Update-ModuleManifest `
-                -Path $Item `
-                -FunctionsToExport $FunctionNames `
-                -AliasesToExport $AliasNames `
-                -CmdletsToExport $CmdletNames
+            $FunctionNames = Get-Command -Module $ModuleName -CommandType Function | Select-Object -ExpandProperty Name
+            Write-Verbose "Function names are $($FunctionsNames -join ', ')"
+            if ($FunctionNames) { Update-ModuleManifest -Path $Item -FunctionsToExport $FunctionNames)
+
+            $AliasNames = Get-Command -Module $ModuleName -CommandType Alias | Select-Object -ExpandProperty Name
+            Write-Verbose "Alias names are $($AliasNames -join ', ')"
+            if ($AliasNames) { Update-ModuleManifest -Path $Item -AliasesToExport $AliasNames} 
+
+            $CmdletNames = Get-Command -Module $ModuleName -CommandType Cmdlet | Select-Object -ExpandProperty Name
+            Write-Verbose "Cmdlet names are $($CmdletNames -join ', ')"
+            if ($CmdletNames) { Update-ModuleManifest -Path $Item -CmdletsToExport $CmdletNames }
         }
     }
 }
