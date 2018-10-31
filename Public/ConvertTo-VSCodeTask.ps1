@@ -7,7 +7,7 @@ function ConvertTo-VSCodeTask
     param
     (
         # Sadly, Get-PsakeScriptTasks returns vanilla PSCustomObjects,
-        # so no possiblity for meaningful type checking here
+        # so no possibility for any meaningful type checking here
         [Parameter(Mandatory, ValueFromPipeline)]
         [psobject[]]$PsakeTask
     )
@@ -51,7 +51,7 @@ function ConvertTo-VSCodeTask
                 }
             }
             tasks   = $CachedPsakeTasks.ForEach{
-                @{
+                $task = [ordered]@{
                     label          = $_.Name
                     type           = 'shell'
                     problemMatcher = @(
@@ -59,11 +59,17 @@ function ConvertTo-VSCodeTask
                     )
                     command        = "Invoke-Psake -taskList $($_.Name)"
                 }
+
+                if ($_.Name -eq 'default')
+                {
+                    $task.group = @{
+                        kind      = 'build'
+                        isDefault = $true
+                    }
+                }
+
+                $task
             }
         }
     }
 }
-
-Get-PSakeScriptTasks -buildFile '/Users/jhoek/GitHub/UncommonSense.ALPS/build.ps1' | 
-    ConvertTo-VSCodeTask | 
-    ConvertTo-Json -Depth 10
