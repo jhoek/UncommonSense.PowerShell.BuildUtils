@@ -1,6 +1,6 @@
 <#
 .EXAMPLE
-Get-PsakeScriptTasks -buildFile ./build.ps1 | ConvertTo-VSCodeTask | ConvertTo-Json | Set-Content ./.vscode/tasks.json
+Get-PsakeScriptTasks -buildFile ./build.ps1 | ConvertTo-VSCodeTask | ConvertTo-Json -Depth 10 | Set-Content ./.vscode/tasks.json
 #>
 function ConvertTo-VSCodeTask
 {
@@ -14,10 +14,10 @@ function ConvertTo-VSCodeTask
 
     begin
     {
-        $CachedPsakeTasks = New-Object System.Collections.ArrayList 
+        $CachedPsakeTasks = New-Object System.Collections.ArrayList
     }
 
-    process 
+    process
     {
         $CachedPsakeTasks.AddRange($PsakeTask)
     }
@@ -63,7 +63,3 @@ function ConvertTo-VSCodeTask
         }
     }
 }
-
-Get-PSakeScriptTasks -buildFile '/Users/jhoek/GitHub/UncommonSense.ALPS/build.ps1' | 
-    ConvertTo-VSCodeTask | 
-    ConvertTo-Json -Depth 10
