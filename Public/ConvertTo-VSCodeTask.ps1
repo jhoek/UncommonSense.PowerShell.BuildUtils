@@ -26,30 +26,6 @@ function ConvertTo-VSCodeTask
     {
         @{
             version = '2.0.0'
-            windows = @{
-                options = @{
-                    shell = @{
-                        executable = 'powershell.exe'
-                        args       = '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command'
-                    }
-                }
-            }
-            linux   = @{
-                options = @{
-                    shell = @{
-                        executable = '/usr/bin/pwsh'
-                        args       = '-NoProfile', '-Command'
-                    }
-                }
-            }
-            osx     = @{
-                options = @{
-                    shell = @{
-                        executable = '/usr/local/bin/pwsh'
-                        args       = '-NoProfile', '-Command'
-                    }
-                }
-            }
             tasks   = $CachedPsakeTasks.ForEach{
                 $task = [ordered]@{
                     label          = $_.Name
