@@ -24,6 +24,8 @@ function ConvertTo-VSCodeTask
 
     end
     {
+        $TestTaskName = $CachedPsakeTasks | Where-Object Name -like 'Test*' | Select-Object -First 1 -ExpandProperty Name
+
         @{
             version = '2.0.0'
             tasks   = $CachedPsakeTasks.ForEach{
@@ -40,6 +42,14 @@ function ConvertTo-VSCodeTask
                 {
                     $task.group = @{
                         kind      = 'build'
+                        isDefault = $true
+                    }
+                }
+
+                if ($_.Name -eq $TestTaskName )
+                {
+                    $task.group = @{
+                        kind      = 'test'
                         isDefault = $true
                     }
                 }
