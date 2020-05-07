@@ -1,4 +1,4 @@
-function New-BinaryModuleManifest 
+function New-BinaryModuleManifest
 {
     param
     (
@@ -13,7 +13,8 @@ function New-BinaryModuleManifest
 
         [string]$Author,
         [string]$CompanyName,
-        [string]$Copyright
+        [string]$Copyright,
+        [string]$Description
     )
 
     $ModuleName = (Get-Item -Path $ModulePath).Name
@@ -36,6 +37,7 @@ function New-BinaryModuleManifest
         -Author $Author `
         -CompanyName $CompanyName `
         -Copyright $Copyright `
+        -Description $Description `
         -TypesToProcess $TypesToProcess `
         -FormatsToProcess $FormatsToProcess `
         -CmdletsToExport $CmdletNames
