@@ -27,7 +27,7 @@ function New-BinaryModuleManifest
     $FormatsPath = Join-Path -Path $ModulePath -ChildPath 'format.ps1xml'
     $FormatsToProcess = if (Test-Path -Path $FormatsPath) { "$ModuleName.format.ps1xml" }
     $SourcePaths = Get-ChildItem -Path $ModulePath -Filter *.cs -Recurse
-    $CmdletNames = $SourcePaths | Select-String -Pattern '^\s+\[Cmdlet\(Verbs[^.]+\.(\w+),\s+\"(.*)\"' | ForEach-Object { $_.Matches[0] } | ForEach-Object { "$($_.groups[1].Value)-$($_.groups[2].Value)" }
+    $CmdletNames = $SourcePaths | Select-String -Pattern '^\s*\[Cmdlet\(Verbs[^.]+\.(\w+),\s+\"(.*)\"' | ForEach-Object { $_.Matches[0] } | ForEach-Object { "$($_.groups[1].Value)-$($_.groups[2].Value)" }
 
     New-ModuleManifest `
         -Path $Path `
