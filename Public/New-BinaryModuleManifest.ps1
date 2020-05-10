@@ -28,6 +28,7 @@ function New-BinaryModuleManifest
     $FormatsToProcess = if (Test-Path -Path $FormatsPath) { "$ModuleName.format.ps1xml" }
     $SourcePaths = Get-ChildItem -Path $ModulePath -Filter *.cs -Recurse
     $CmdletNames = $SourcePaths | Select-String -Pattern '^\s*\[Cmdlet\(Verbs[^.]+\.(\w+),\s+\"(.*)\"' | ForEach-Object { $_.Matches[0] } | ForEach-Object { "$($_.groups[1].Value)-$($_.groups[2].Value)" }
+    $AliasNames = $SourcePaths | Select-String -Pattern '^\s*\[Alias\(\"(.*)\"\)\]' | ForEach-Object { $_.Matches[0].Groups[1].Value }
 
     New-ModuleManifest `
         -Path $Path `
@@ -39,6 +40,7 @@ function New-BinaryModuleManifest
         -Copyright $Copyright `
         -Description $Description `
         -TypesToProcess $TypesToProcess `
+        -AliasesToExport $AliasNames `
         -FormatsToProcess $FormatsToProcess `
         -CmdletsToExport $CmdletNames
 }
