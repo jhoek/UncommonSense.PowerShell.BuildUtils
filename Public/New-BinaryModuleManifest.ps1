@@ -30,6 +30,16 @@ function New-BinaryModuleManifest
     $CmdletNames = $SourcePaths | Select-String -Pattern '^\s*\[Cmdlet\(Verbs[^.]+\.(\w+),\s+\"(.*)\"' | ForEach-Object { $_.Matches[0] } | ForEach-Object { "$($_.groups[1].Value)-$($_.groups[2].Value)" }
     $AliasNames = $SourcePaths | Select-String -Pattern '^\s*\[Alias\(\"(.*)\"\)\]' | ForEach-Object { $_.Matches[0].Groups[1].Value }
 
+    Write-Verbose "Module Name: $ModuleName"
+    Write-Verbose "Module Version: $ModuleVersion"
+    Write-Verbose "Root Module Path: $RootModulePath"
+    Write-Verbose "Types Path: $TypesPath"
+    Write-Verbose "Types to Process: $TypesToProcess"
+    Write-Verbose "Formats Path: $FormatsPath"
+    Write-Verbose "Formats to Process: $FormatsToProcess"
+    Write-Verbose "Cmdlet Names: $CmdletNames"
+    Write-Verbose "Alias Names: $AliasNames"
+
     New-ModuleManifest `
         -Path $Path `
         -RootModule $RootModuleFileName `
