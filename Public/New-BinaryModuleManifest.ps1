@@ -11,6 +11,7 @@ function New-BinaryModuleManifest
         [Parameter(Mandatory)]
         [string]$Guid,
 
+        [switch]$Hybrid,
         [string]$Author,
         [string]$CompanyName,
         [string]$Copyright,
@@ -19,9 +20,23 @@ function New-BinaryModuleManifest
 
     $ModuleName = (Get-Item -Path $ModulePath).Name
     $OutputFolderPath = Split-Path -Path $Path -Parent
-    $RootModuleFileName = "$($ModuleName).dll"
-    $RootModulePath = Join-Path -Path $OutputFolderPath -ChildPath $RootModuleFileName
-    $ModuleVersion = (Get-Item -Path $RootModulePath).VersionInfo.ProductVersion
+
+    $DllFileName = "$($ModuleName).dll"
+    $ScriptFileName = "$($ModuleName).psm1"
+
+    if ($Hybrid)
+    {
+        $RootModuleFileName = $ScriptFileName
+        $NestedModules = @($DllFileName)
+    }
+    else
+    {
+        $RootModuleFileName = $DllFileName
+        $NestedModules = @()
+    }
+
+    $DllFilePath = Join-Path -Path $OutputFolderPath -ChildPath $DllFileName
+    $ModuleVersion = (Get-Item -Path $DllFilePath).VersionInfo.ProductVersion
     $TypesPath = Join-Path -Path $ModulePath -ChildPath 'types.ps1xml'
     $TypesToProcess = if (Test-Path -Path $TypesPath) { "$ModuleName.types.ps1xml" }
     $FormatsPath = Join-Path -Path $ModulePath -ChildPath 'format.ps1xml'
@@ -32,7 +47,8 @@ function New-BinaryModuleManifest
 
     Write-Verbose "Module Name: $ModuleName"
     Write-Verbose "Module Version: $ModuleVersion"
-    Write-Verbose "Root Module Path: $RootModulePath"
+    Write-Verbose "Root Module Path: $RootModuleFileName"
+    Write-Verbose "Nested Module Paths: $NestedModules"
     Write-Verbose "Types Path: $TypesPath"
     Write-Verbose "Types to Process: $TypesToProcess"
     Write-Verbose "Formats Path: $FormatsPath"
@@ -43,6 +59,7 @@ function New-BinaryModuleManifest
     New-ModuleManifest `
         -Path $Path `
         -RootModule $RootModuleFileName `
+        -NestedModules $NestedModules `
         -ModuleVersion $ModuleVersion `
         -Guid $Guid `
         -Author $Author `
