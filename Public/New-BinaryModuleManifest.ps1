@@ -36,7 +36,7 @@ function New-BinaryModuleManifest
     }
 
     $DllFilePath = Join-Path -Path $OutputFolderPath -ChildPath $DllFileName
-    $ModuleVersion = (Get-Item -Path $DllFilePath).VersionInfo.ProductVersion
+    $ModuleVersion = (Get-Item -Path $DllFilePath).VersionInfo.ProductVersion -replace '\+.*$', ''
     $TypesPath = Join-Path -Path $ModulePath -ChildPath 'types.ps1xml'
     $TypesToProcess = if (Test-Path -Path $TypesPath) { "$ModuleName.types.ps1xml" }
     $FormatsPath = Join-Path -Path $ModulePath -ChildPath 'format.ps1xml'
