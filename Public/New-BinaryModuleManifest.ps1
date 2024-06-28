@@ -41,9 +41,11 @@ function New-BinaryModuleManifest
     $TypesToProcess = if (Test-Path -Path $TypesPath) { "$ModuleName.types.ps1xml" }
     $FormatsPath = Join-Path -Path $ModulePath -ChildPath 'format.ps1xml'
     $FormatsToProcess = if (Test-Path -Path $FormatsPath) { "$ModuleName.format.ps1xml" }
-    $SourcePaths = Get-ChildItem -Path $ModulePath -Filter *.cs -Recurse
-    $CmdletNames = $SourcePaths | Select-String -Pattern '^\s*\[Cmdlet\(Verbs[^.]+\.(\w+),\s+\"(.*?)\"' | ForEach-Object { $_.Matches[0] } | ForEach-Object { "$($_.groups[1].Value)-$($_.groups[2].Value)" }
-    $AliasNames = $SourcePaths | Select-String -Pattern '^\s*\[Alias\(\"(.*)\"\)\]' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+
+    $dllFilePath = '~/GitHub/UncommonSense.Pocket/output/UncommonSense.Pocket/UncommonSense.Pocket.dll'
+    $Types = Add-Type -Path $DllFilePath -PassThru
+    $CmdletNames = $Types | ForEach-Object { $_.GetCustomAttributes($true) } | Where-Object { $_ -is [System.Management.Automation.CmdletAttribute] } | ForEach-Object { "$($_.VerbName)-$($_.NounName)" } | Select-Object -Unique
+    $AliasNames = $Types | ForEach-Object { $_.GetCustomAttributes($true) } | Where-Object { $_ -is [System.Management.Automation.AliasAttribute] } | ForEach-Object { $_.AliasNames } | Select-Object -Unique
 
     Write-Verbose "Module Name: $ModuleName"
     Write-Verbose "Module Version: $ModuleVersion"
