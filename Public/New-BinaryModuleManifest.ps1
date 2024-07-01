@@ -42,7 +42,6 @@ function New-BinaryModuleManifest
     $FormatsPath = Join-Path -Path $ModulePath -ChildPath 'format.ps1xml'
     $FormatsToProcess = if (Test-Path -Path $FormatsPath) { "$ModuleName.format.ps1xml" }
 
-    $dllFilePath = '~/GitHub/UncommonSense.Pocket/output/UncommonSense.Pocket/UncommonSense.Pocket.dll'
     $Types = Add-Type -Path $DllFilePath -PassThru
     $CmdletNames = $Types | ForEach-Object { $_.GetCustomAttributes($true) } | Where-Object { $_ -is [System.Management.Automation.CmdletAttribute] } | ForEach-Object { "$($_.VerbName)-$($_.NounName)" } | Select-Object -Unique
     $AliasNames = $Types | ForEach-Object { $_.GetCustomAttributes($true) } | Where-Object { $_ -is [System.Management.Automation.AliasAttribute] } | ForEach-Object { $_.AliasNames } | Select-Object -Unique
