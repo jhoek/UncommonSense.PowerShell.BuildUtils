@@ -15,10 +15,10 @@ function New-BinaryModuleManifest
         [string]$Author,
         [string]$CompanyName,
         [string]$Copyright,
-        [string]$Description
+        [string]$Description,
+        [string]$ModuleName = (Get-Item -Path $ModulePath).Name
     )
 
-    $ModuleName = (Get-Item -Path $ModulePath).Name
     $OutputFolderPath = Split-Path -Path $Path -Parent
 
     $DllFileName = "$($ModuleName).dll"
