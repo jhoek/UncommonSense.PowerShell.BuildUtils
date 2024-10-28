@@ -16,12 +16,13 @@ function New-BinaryModuleManifest
         [string]$CompanyName,
         [string]$Copyright,
         [string]$Description,
-        [string]$ModuleName = (Get-Item -Path $ModulePath).Name
+        [string]$ModuleName = (Get-Item -Path $ModulePath).Name,
+        [string]$SanitizedModuleName = [regex]::Replace($ModuleName, '[^\w.]', '')
     )
 
     $OutputFolderPath = Split-Path -Path $Path -Parent
 
-    $DllFileName = "$($ModuleName).dll"
+    $DllFileName = "$($SanitizedModuleName).dll"
     $ScriptFileName = "$($ModuleName).psm1"
 
     if ($Hybrid)
